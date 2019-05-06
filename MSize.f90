@@ -1,4 +1,4 @@
 module MSize
 implicit none
-integer, parameter :: length=1000, height=1000
+integer, parameter :: length=100, height=20
 end module MSize

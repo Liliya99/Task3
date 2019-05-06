@@ -84,6 +84,7 @@ if (mpiRank==mpimaxRank) then
  call mpi_bcast(x2, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
  call mpi_bcast(y1, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
  call mpi_bcast(y2, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
+endif
 
 call mpi_finalize(mpiErr)
 

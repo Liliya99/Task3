@@ -1,10 +1,9 @@
-G=gfortran
-mp=-fopenmp
+F=mpiifort
 main.out: TASK.o main.o
-	$(G) $^ -o $@
+	$(F) $^ -o $@
 main.o: main.f90 MSize.mod
-	$(G) -c $<
+	$(F) -c $<
 TASK.o: TASK.f90
-	$(G) -c $<
+	$(F) -c $<
 MSize.mod: MSize.f90
-	$(G) -c $<
+	$(F) -c $<
