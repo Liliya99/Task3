@@ -7,7 +7,6 @@ integer(4) :: x1, y1, x2, y2, i, height, length
 integer(4) :: mpiErr, mpiSize, mpiRank
 
 call mpi_init(mpiErr)
-write(*,*)"proverka"
 call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
 call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
 

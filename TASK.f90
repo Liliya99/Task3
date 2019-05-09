@@ -12,7 +12,6 @@ real(8) previous_Summ, Summ, maxSumm, mpimaxSumm
 integer(4) :: mpiErr, mpiSize, mpiRank, mpimaxRank
 integer(4), dimension(MPI_STATUS_SIZE) :: status
 
-write(*,*)"in TASK"
 
 x1=1
 x2=1
@@ -25,7 +24,6 @@ Aheight=size(A(1,:))
 
 call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
 call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
-write(*,*) mpiRank
 
 do i=mpiRank, Aheight, mpiSize
  B=0
@@ -60,15 +58,15 @@ enddo
 
 if (mpiRank/=0) then
 
- call mpi_send(maxSumm, 0, MPI_REAL8, 0, 555, MPI_COMM_WORLD,   mpiErr)
+ call mpi_send(maxSumm, 1, MPI_REAL8, 0, 555, MPI_COMM_WORLD, mpiErr)
 
 else
 
  mpimaxSumm=maxSumm
  mpimaxRank=0
 
- do i=1,mpiSize
-  call mpi_recv(maxSumm, 0, MPI_REAL8, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, status, mpiErr)
+ do i=1,mpiSize-1
+  call mpi_recv(maxSumm, 1, MPI_REAL8, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, status, mpiErr)
 
   if (maxSumm>mpimaxSumm) then
    mpimaxSumm=maxSumm
@@ -77,18 +75,14 @@ else
 
  enddo
 
- call mpi_bcast(mpimaxRank, 0, MPI_INTEGER4, 0, MPI_COMM_WORLD, mpiErr)
-
 endif
 
-if (mpiRank==mpimaxRank) then
- call mpi_bcast(x1, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr) 
- call mpi_bcast(x2, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
- call mpi_bcast(y1, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
- call mpi_bcast(y2, 0, MPI_INTEGER4, mpiRank, MPI_COMM_WORLD, mpiErr)
-endif
+call mpi_bcast(mpimaxRank, 1, MPI_INTEGER4, 0, MPI_COMM_WORLD, mpiErr)
 
-call mpi_finalize(mpiErr)
+call mpi_bcast(x1, 4, MPI_INTEGER4, mpimaxRank, MPI_COMM_WORLD, mpiErr) 
+call mpi_bcast(x2, 4, MPI_INTEGER4, mpimaxRank, MPI_COMM_WORLD, mpiErr)
+call mpi_bcast(y1, 4, MPI_INTEGER4, mpimaxRank, MPI_COMM_WORLD, mpiErr)
+call mpi_bcast(y2, 4, MPI_INTEGER4, mpimaxRank, MPI_COMM_WORLD, mpiErr)
 
 end subroutine
 end module
