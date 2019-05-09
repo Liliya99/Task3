@@ -12,6 +12,8 @@ real(8) previous_Summ, Summ, maxSumm, mpimaxSumm
 integer(4) :: mpiErr, mpiSize, mpiRank, mpimaxRank
 integer(4), dimension(MPI_STATUS_SIZE) :: status
 
+write(*,*)"in TASK"
+
 x1=1
 x2=1
 y1=1
@@ -21,9 +23,9 @@ maxSumm=A(1,1)
 Alength=size(A(:,1))
 Aheight=size(A(1,:))
 
-call mpi_init(mpiErr)
 call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
 call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
+write(*,*) mpiRank
 
 do i=mpiRank, Aheight, mpiSize
  B=0

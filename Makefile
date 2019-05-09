@@ -1,9 +1,7 @@
-F=mpiifort
+MI=mpiifort
 main.out: TASK.o main.o
-	$(F) $^ -o $@
-main.o: main.f90 MSize.mod
-	$(F) -c $<
+	$(MI) $^ -o $@
+main.o: main.f90
+	$(MI) -c $<
 TASK.o: TASK.f90
-	$(F) -c $<
-MSize.mod: MSize.f90
-	$(F) -c $<
+	$(MI) -c $<
