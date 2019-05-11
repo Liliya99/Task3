@@ -49,33 +49,26 @@ contains
     enddo
     if (Summ>maxSumm) then
      maxSumm=Summ
-     x1=bottom_border
-     x2=upper_border
-     y1=i
-     y2=j
+     y1=bottom_border
+     y2=upper_border
+     x1=i
+     x2=j
     endif
    enddo
   enddo
 
   if (mpiRank/=0) then
-
    call mpi_send(maxSumm, 1, MPI_REAL8, 0, 555, MPI_COMM_WORLD, mpiErr)
-
   else
-
    mpimaxSumm=maxSumm
    mpimaxRank=0
-
    do i=1,mpiSize-1
     call mpi_recv(maxSumm, 1, MPI_REAL8, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, status, mpiErr)
-
     if (maxSumm>mpimaxSumm) then
      mpimaxSumm=maxSumm
      mpimaxRank=status(MPI_SOURCE)
     endif
-
    enddo
-
   endif
 
   call mpi_bcast(mpimaxRank, 1, MPI_INTEGER4, 0, MPI_COMM_WORLD, mpiErr)
