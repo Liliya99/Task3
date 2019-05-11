@@ -26,7 +26,7 @@ contains
   call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
   call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
 
-  do i=mpiRank, Aheight, mpiSize
+  do i=mpiRank+1, Aheight, mpiSize
    B=0
    do j=i,Aheight
     B=B+A(:,j)
@@ -49,10 +49,10 @@ contains
     enddo
     if (Summ>maxSumm) then
      maxSumm=Summ
-     y1=bottom_border
-     y2=upper_border
-     x1=i
-     x2=j
+     x1=bottom_border
+     x2=upper_border
+     y1=i
+     y2=j
     endif
    enddo
   enddo
